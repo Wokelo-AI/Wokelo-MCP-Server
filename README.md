@@ -567,6 +567,25 @@ Full setup guides, API reference, and tutorials:
 
 ---
 
+## Registry Publishing
+
+This repository includes official MCP Registry metadata in `server.json`.
+
+- The server is defined as a public remote MCP server at `https://mcp.wokelo.ai/mcp`
+- Publishing is automated through GitHub Actions in `.github/workflows/publish-mcp.yml`
+- To publish a new MCP Registry version, create and push a Git tag in the format `vX.Y.Z`
+
+Example:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+The workflow uses GitHub OIDC authentication and stamps the registry version from the Git tag before publishing.
+
+---
+
 ## Support
 
 - **Documentation:** [docs.wokelo.ai/getting-started-mcp](https://docs.wokelo.ai/getting-started-mcp)
