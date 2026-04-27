@@ -67,24 +67,6 @@ Then open a Claude Code session and run `/mcp` to complete the OAuth authenticat
 
 **Verify:** Run `/mcp` again — `wokelo` should appear as connected with its tool list.
 
-### ChatGPT Web
-
-> **Availability:** Full MCP support is available on ChatGPT web for **Business** and **Enterprise/Edu** workspaces. Only admins/owners can publish apps, and developer mode must be enabled before creating a custom MCP app.
-
-1. Confirm developer mode is enabled for your account:
-   - For **Business**, admins/owners can enable it when creating a custom app from **Workspace Settings > Apps > Create**.
-   - For **Enterprise/Edu**, admins can grant access first, then enabled users can turn it on in **Settings > Apps > Advanced Settings**.
-2. Open **Workspace Settings > Apps > Create**.
-3. Add the app details:
-   - **Name:** `Wokelo`
-   - **MCP Server URL:** `https://mcp.wokelo.ai/mcp`
-   - **Authentication:** `OAuth`
-4. Click **Create**.
-5. Complete the OAuth login in your browser when redirected to Wokelo.
-6. After authentication, the Wokelo app appears in ChatGPT as a draft/dev app for testing.
-
-> **Optional:** If you want the connector available to the full workspace, publish it from **Workspace Settings > Apps** after testing.
-
 ### OpenAI Codex (CLI and IDE extension)
 
 Codex shares MCP configuration between the CLI and the IDE extension via `~/.codex/config.toml`.
@@ -112,16 +94,6 @@ This opens your browser for authentication. Codex stores the tokens locally and 
 
 **Verify:** Start a Codex session (`codex`) and run `/mcp` in the TUI. Confirm `wokelo` lists its tools. The IDE extension reflects the same configuration automatically.
 
-### Cursor
-
-Cursor 1.0+ supports OAuth and Streamable HTTP natively:
-
-1. Go to **Cursor > Settings > Cursor Settings > MCP**
-2. Click **Add MCP Server**
-3. Paste the server URL: `https://mcp.wokelo.ai/mcp`
-4. Complete the OAuth login when prompted
-5. Click the refresh icon in the MCP panel if the tool list doesn't appear immediately
-
 ### Microsoft Copilot Studio
 
 Copilot Studio has a built-in MCP onboarding wizard that handles OAuth 2.0 with Dynamic Client Registration (DCR) — which Wokelo supports — so no Swagger file or custom connector is required.
@@ -142,72 +114,15 @@ The agent orchestrator uses the server description to decide when to call Wokelo
 
 > **Note:** Generative Orchestration must be enabled on the agent for MCP tools to be invoked. Copilot Studio dropped SSE support in August 2025; Streamable HTTP (what Wokelo uses) is the supported transport.
 
-### VS Code / GitHub Copilot
+### Cursor
 
-VS Code supports remote MCP servers over Streamable HTTP and can add them through the built-in guided flow:
+Cursor 1.0+ supports OAuth and Streamable HTTP natively:
 
-1. Open the **Command Palette** and run **MCP: Add Server**
-2. Choose whether to add the server to your **Workspace** or your **User profile**
-3. Enter the server name: `wokelo`
-4. Select **HTTP** as the server type
-5. Enter the server URL: `https://mcp.wokelo.ai/mcp`
-6. Save the configuration and start the server when prompted
-7. If VS Code asks you to trust the server configuration, confirm trust
-8. Complete the OAuth sign-in in your browser when VS Code prompts for authentication
-9. Open **Copilot Chat**, switch to **Agent** mode, and use the tools picker / **Configure Tools** to confirm the Wokelo tools are available
-
-If you prefer to manage the config directly, add this to `.vscode/mcp.json` or your user `mcp.json`:
-
-```json
-{
-  "servers": {
-    "wokelo": {
-      "type": "http",
-      "url": "https://mcp.wokelo.ai/mcp"
-    }
-  }
-}
-```
-
-After saving the file, start the server from the editor CodeLens or via **MCP: List Servers**.
-
-### GitHub Copilot CLI
-
-1. Install GitHub Copilot CLI globally. With npm:
-
-```bash
-npm install -g @github/copilot
-```
-
-2. Start the CLI:
-
-```bash
-copilot
-```
-
-3. Sign in to GitHub by running:
-
-```text
-/login
-```
-
-You can also authenticate from the terminal with `copilot login`.
-
-4. In the interactive Copilot CLI session, run:
-
-```text
-/mcp add
-```
-
-5. Fill in the form with:
-   - **Server Name:** `wokelo`
-   - **Server Type:** `HTTP or SSE`
-   - **URL:** `https://mcp.wokelo.ai/mcp`
-   - **Tools:** `*`
-6. Press `Ctrl+S` to save the configuration
-7. Complete the Wokelo OAuth login in your browser when prompted
-
-**Verify:** Run `/mcp show wokelo`
+1. Go to **Cursor > Settings > Cursor Settings > MCP**
+2. Click **Add MCP Server**
+3. Paste the server URL: `https://mcp.wokelo.ai/mcp`
+4. Complete the OAuth login when prompted
+5. Click the refresh icon in the MCP panel if the tool list doesn't appear immediately
 
 ### Perplexity (Pro / Enterprise)
 
@@ -232,6 +147,25 @@ Custom remote connectors are available to paid Perplexity users and support OAut
 2. Add a new server with URL: `https://mcp.wokelo.ai/mcp`
 3. Complete the OAuth login when prompted
 
+### VS Code / GitHub Copilot
+
+In VS Code 1.101+, open the Command Palette → **MCP: Open User Configuration** and add:
+
+```json
+{
+  "servers": {
+    "wokelo": {
+      "type": "http",
+      "url": "https://mcp.wokelo.ai/mcp"
+    }
+  }
+}
+```
+
+Save the file. VS Code picks up the change automatically and prompts for OAuth sign-in on first tool use. Check status in the Chat view's **Configure Tools** menu.
+
+> **Note on keys:** VS Code uses `servers` (plural). This is **different** from the `mcpServers` key used by Claude Desktop's legacy config and most other clients — don't confuse the two.
+
 ### Visual Studio 2022 (17.14+) / Visual Studio 2026
 
 Visual Studio supports remote MCP servers with OAuth via an `mcp.json` file at the solution or user level:
@@ -248,6 +182,34 @@ Visual Studio supports remote MCP servers with OAuth via an `mcp.json` file at t
 ```
 
 Use the **Manage Authentication** CodeLens action in the `mcp.json` file to trigger the OAuth browser flow.
+
+### GitHub Copilot CLI
+
+Inside an interactive Copilot CLI session:
+
+```
+/mcp add
+```
+
+Select **HTTP**, then provide:
+- **URL:** `https://mcp.wokelo.ai/mcp`
+- **Server ID:** `wokelo`
+- **Tools:** `*`
+
+Or edit `~/.copilot/mcp-config.json` directly:
+
+```json
+{
+  "mcpServers": {
+    "wokelo": {
+      "type": "http",
+      "url": "https://mcp.wokelo.ai/mcp"
+    }
+  }
+}
+```
+
+**Verify:** `/mcp show wokelo`
 
 ### Google Antigravity
 
@@ -523,15 +485,14 @@ See Wokelo MCP in action with real outputs:
 | --- | --- | --- | --- |
 | Claude Desktop | Settings > Connectors > Add MCP Server | Native | ✅ Supported |
 | Claude Code | `claude mcp add --transport http` | Native via `/mcp` | ✅ Supported |
-| ChatGPT Web | Workspace Settings > Apps > Create (developer mode required) | Native | ✅ Supported |
 | OpenAI Codex (CLI + IDE) | `codex mcp add --url` + `codex mcp login` | Native | ✅ Supported |
-| Cursor | Settings > MCP > Add MCP Server | Native | ✅ Supported |
 | Microsoft Copilot Studio | MCP onboarding wizard → OAuth 2.0 → Dynamic discovery | Native (DCR) | ✅ Supported |
-| VS Code / GitHub Copilot | `MCP: Add Server` or `mcp.json` | Native | ✅ Supported |
-| GitHub Copilot CLI | Install `@github/copilot` → `/login` → `/mcp add` | Native | ✅ Supported |
+| Cursor | Settings > MCP > Add MCP Server | Native | ✅ Supported |
 | Perplexity (Pro/Enterprise) | Settings > Connectors > Custom connector > Remote | Native (DCR) | ✅ Supported |
 | Windsurf | Settings > MCP | Native | ✅ Supported |
+| VS Code / GitHub Copilot | `mcp.json` (`servers` key) | Native | ✅ Supported |
 | Visual Studio 2022 (17.14+) / 2026 | `mcp.json` + Manage Authentication CodeLens | Native | ✅ Supported |
+| GitHub Copilot CLI | `/mcp add` or `~/.copilot/mcp-config.json` | Native | ✅ Supported |
 | Google Antigravity | `mcp_config.json` (native or `mcp-remote` fallback) | See notes | ⚠️ Works via fallback if native fails |
 
 ---
