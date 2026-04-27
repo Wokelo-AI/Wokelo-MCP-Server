@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.wokelo-ai/wokelo-mcp-server",
+  "name": "io.github.Wokelo-AI/wokelo-mcp-server",
   "title": "Wokelo MCP Server",
   "description": "Dealmaking research for AI assistants: company intelligence, deals, and research deliverables.",
   "websiteUrl": "https://docs.wokelo.ai/getting-started-mcp",
@@ -15,7 +15,7 @@
       "mimeType": "image/png"
     }
   ],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "remotes": [
     {
       "type": "streamable-http",
