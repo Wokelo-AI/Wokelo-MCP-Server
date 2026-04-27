@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.Wokelo-AI/wokelo-mcp-server",
   "title": "Wokelo MCP Server",
-  "description": "Dealmaking research for AI assistants: company intelligence, deals, and research deliverables.",
+  "description": "Dealmaking research with 100M+ companies, 30+ premium sources, M&A data, and verified outputs.",
   "websiteUrl": "https://docs.wokelo.ai/getting-started-mcp",
   "repository": {
     "id": "1217723632",
@@ -12,10 +12,13 @@
   "icons": [
     {
       "src": "https://www.wokelo.ai/logo.png",
-      "mimeType": "image/png"
+      "mimeType": "image/png",
+      "sizes": [
+        "1256x1256"
+      ]
     }
   ],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "remotes": [
     {
       "type": "streamable-http",
